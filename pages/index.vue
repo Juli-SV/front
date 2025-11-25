@@ -18,9 +18,9 @@
           <tbody class="table__body">
             <template v-for="(item, index) in tableParams.data" :key="index">
               <tr @click="toggleChart(index)" class="table__bodyRow">
-                <td class="table__bodyCell indicator">{{ item.indicator }}</td>
-                <td class="table__bodyCell table__bodyCell--yesterday">{{ item.currentDay }}</td>
-                <td class="table__bodyCell table__bodyCell--currentDay" :class="getPercentClass(item)">
+                <td class="table__bodyCell indicator" :data-label="tableParams.title[0]">{{ item.indicator }}</td>
+                <td class="table__bodyCell table__bodyCell--yesterday" :data-label="tableParams.title[1]">{{ item.currentDay }}</td>
+                <td class="table__bodyCell table__bodyCell--currentDay" :class="getPercentClass(item)" :data-label="tableParams.title[2]">
                   <div class="currentDay__container">
                     <div class="currentDay__value">{{ item.yesterday }}</div>
                     <div class="currentDay__percent" v-if="getChangePercent(item) !== null">
@@ -28,12 +28,12 @@
                     </div>
                   </div>
                 </td>
-                <td class="table__bodyCell table__bodyCell--thisWeek" :class="getThisWeekClass(item)">
+                <td class="table__bodyCell table__bodyCell--thisWeek" :class="getThisWeekClass(item)" :data-label="tableParams.title[3]">
                   {{ item.thisWeek }}
                 </td>
               </tr>
-              <tr v-if="openCharts[index]">
-                <td colspan="4">
+              <tr v-if="openCharts[index]" class="table__chartRow">
+                <td colspan="4" class="table__chartCell">
                   <Chart :chart-id="`chart-${index}`" :data="item" />
                 </td>
               </tr>
@@ -253,30 +253,64 @@ onMounted(async () => {
   text-align: center;
   justify-content: center;
 
+  @include phones {
+    padding: 1rem;
+  }
+
   h1 {
     color: #42b983;
     font-size: 2.5rem;
     margin-bottom: 1rem;
+
+    @include phones {
+      font-size: 1.5rem;
+    }
   }
 
   p {
     color: #666;
     font-size: 1.2rem;
+
+    @include phones {
+      font-size: 1rem;
+    }
   }
 }
 
 .section {
   width: 100%;
   align-items: center;
+  overflow-x: hidden;
 }
 
 .table__container {
   display: flex;
   justify-content: center;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @include phones {
+    justify-content: flex-start;
+  }
 }
 
 .table {
   margin-top: 2rem;
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+
+  @include phones {
+    min-width: 100%;
+    display: block;
+  }
+
+  &__header {
+    @include phones {
+      display: none;
+    }
+  }
 
   &__headerCell {
     font-weight: 600;
@@ -284,9 +318,20 @@ onMounted(async () => {
     background-color: #f2f2f2;
     text-align: center;
     padding: 12px;
+    white-space: nowrap;
 
     &:nth-child(2) {
       background-color: #edf8ff;
+    }
+
+    @include phones {
+      display: none;
+    }
+  }
+
+  &__body {
+    @include phones {
+      display: block;
     }
   }
 
@@ -297,6 +342,15 @@ onMounted(async () => {
     &:hover {
       background-color: #f8f9fa;
     }
+
+    @include phones {
+      display: block;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      padding: 12px;
+    }
   }
 
   &__bodyCell {
@@ -306,9 +360,40 @@ onMounted(async () => {
     background-color: #F5F5F5;
     align-items: center;
     padding: 12px;
+    white-space: nowrap;
+
+    @include phones {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      border: none;
+      background-color: transparent;
+      text-align: left;
+
+      &::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #7c7f81;
+        margin-right: 10px;
+        flex-shrink: 0;
+      }
+    }
 
     &:first-child {
       text-align: left;
+
+      @include phones {
+        font-weight: 700;
+        font-size: 1.1em;
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+        border-bottom: 2px solid #f2f2f2;
+
+        &::before {
+          content: '';
+        }
+      }
     }
 
     &--yesterday {
@@ -352,6 +437,36 @@ onMounted(async () => {
         color: #ff3d42;
       }
     }
+  }
+
+}
+
+// Стили для строки с графиком
+.table__chartRow {
+  @include phones {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .table__chartCell {
+    @include phones {
+      display: block;
+      width: 100%;
+      padding: 10px;
+    }
+  }
+}
+
+.last-update {
+  text-align: left;
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+
+  @include phones {
+    font-size: 0.8rem;
+    text-align: center;
   }
 }
 </style>
