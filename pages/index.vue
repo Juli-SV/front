@@ -19,8 +19,10 @@
             <template v-for="(item, index) in tableParams.data" :key="index">
               <tr @click="toggleChart(index)" class="table__bodyRow">
                 <td class="table__bodyCell indicator" :data-label="tableParams.title[0]">{{ item.indicator }}</td>
-                <td class="table__bodyCell table__bodyCell--yesterday" :data-label="tableParams.title[1]">{{ item.currentDay }}</td>
-                <td class="table__bodyCell table__bodyCell--currentDay" :class="getPercentClass(item)" :data-label="tableParams.title[2]">
+                <td class="table__bodyCell table__bodyCell--yesterday" :data-label="tableParams.title[1]">{{
+                  item.currentDay }}</td>
+                <td class="table__bodyCell table__bodyCell--currentDay" :class="getPercentClass(item)"
+                  :data-label="tableParams.title[2]">
                   <div class="currentDay__container">
                     <div class="currentDay__value">{{ item.yesterday }}</div>
                     <div class="currentDay__percent" v-if="getChangePercent(item) !== null">
@@ -28,7 +30,8 @@
                     </div>
                   </div>
                 </td>
-                <td class="table__bodyCell table__bodyCell--thisWeek" :class="getThisWeekClass(item)" :data-label="tableParams.title[3]">
+                <td class="table__bodyCell table__bodyCell--thisWeek" :class="getThisWeekClass(item)"
+                  :data-label="tableParams.title[3]">
                   {{ item.thisWeek }}
                 </td>
               </tr>
@@ -286,9 +289,6 @@ onMounted(async () => {
 .table__container {
   display: flex;
   justify-content: center;
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 
   @include phones {
     justify-content: flex-start;
@@ -297,9 +297,6 @@ onMounted(async () => {
 
 .table {
   margin-top: 2rem;
-  width: 100%;
-  min-width: 600px;
-  border-collapse: collapse;
 
   @include phones {
     min-width: 100%;
