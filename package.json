@@ -1,0 +1,19 @@
+{
+  "name": "front",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "devDependencies": {
+    "nuxt": "^3.0.0",
+    "sass": "^1.69.0"
+  },
+  "dependencies": {
+    "highcharts": "^12.4.0",
+    "vue3-highcharts": "^0.1.3"
+  }
+}
